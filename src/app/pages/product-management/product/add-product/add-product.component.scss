@@ -1,0 +1,157 @@
+::ng-deep .dz-progress {
+    display: none !important;
+}
+
+.custom-tr {
+    text-align: right;
+}
+
+.custom-mr-5 {
+    margin-right: 5px;
+}
+
+#imageUpload {
+    border: 2px dashed #007bff;
+    padding: 20px;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  #imageUpload:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .image-cropper-container {
+    margin-top: 10px;
+  }
+  
+  button.btn-primary.mt-2 {
+    margin-top: 10px;
+  }
+  
+  button.btn-success.mt-3 {
+    margin-top: 20px;
+  }
+
+  .image-slider {
+    display: flex;
+    overflow-x: auto;
+    margin-top: 20px;
+  }
+  
+  .image-slide {
+    flex: 0 0 auto;
+    margin-right: 10px;
+  }
+  
+  .cropped-image {
+    max-height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .image-slider {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  
+  .image-slider::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .image-slider::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+  
+  .image-slider::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+  .image-slide {
+    position: relative;
+    margin-right: 10px;
+  }
+  
+  .cropped-image {
+    max-height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .remove-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .remove-icon:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .btn-margin {
+    margin: 0 0 0 10px;
+  }
+
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .modal-content {
+    max-width: 90%;
+    max-height: 90%;
+  }
+  
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .cropper-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px; 
+    height: 500px; 
+  }
+  
+  .cropper-image {
+    max-width: 100%;
+    max-height: 100%;
+  }

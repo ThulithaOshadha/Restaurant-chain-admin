@@ -1,0 +1,207 @@
+<app-breadcrumbs
+  title="Roles"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- end row -->
+
+<div
+  class="row"
+  *ngIf="!hasPermissionForRoles('VIEW_ROLE')"
+  style="
+    text-align: center;
+    padding: 10px;
+    background-color: #ffebee;
+    border: 1px solid #e57373;
+    border-radius: 5px;
+    color: #e57373;
+  "
+>
+  Access Denied: You do not have permission to continue.
+</div>
+
+<div class="row" *ngIf="hasPermissionForRoles('VIEW_ROLE')">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header custom-tr">
+        <button
+          *ngIf="hasPermissionForRoles('CREATE_ROLE')"
+          type="button"
+          class="btn btn-primary waves-effect waves-light"
+          data-bs-toggle="modal"
+          data-bs-target="#rolecontentModal"
+          data-bs-whatever="Mary"
+          (click)="openRoleModal(roleDataModal)"
+        >
+          Add New Role &nbsp;<strong>+</strong>
+        </button>
+      </div>
+      <!-- end card header -->
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-gridjs">
+            <thead>
+              <tr>
+                <th class="sort">Name</th>
+                <th class="sort">Status</th>
+                <th class="sort">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of roles; track item; let i = $index) {
+              <tr>
+                <td>{{ item.name }}</td>
+                <td>
+                  @if(item.status == 1) {
+                  <span class="badge bg-success-subtle text-success"
+                    >Active</span
+                  >
+                  } @else {
+                  <span class="badge bg-warning-subtle text-warning"
+                    >Deactive</span
+                  >
+                  }
+                </td>
+                <td>
+                  <button
+                    *ngIf="hasPermissionForRoles('UPDATE_ROLE')"
+                    type="button"
+                    class="btn btn-sm btn-primary custom-mr-5 waves-effect waves-light"
+                    data-bs-toggle="modal"
+                    data-bs-target="#roleUpdateContentModal"
+                    data-bs-whatever="Mary"
+                    (click)="openEditModal(roleUpdateModal, item.id)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    *ngIf="hasPermissionForRoles('DELETE_ROLE')"
+                    type="button"
+                    class="pl-5 btn btn-sm btn-danger waves-effect waves-light"
+                    (click)="deleteRole(item.id)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="row justify-content-md-between align-items-md-center">
+          <div class="col-sm-12 col-md-5">
+            <div
+              class="dataTables_info mb-2"
+              id="tickets-table_info"
+              role="status"
+              aria-live="polite"
+            >
+              {{ calculateEntryRange() }}
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="text-md-right float-md-end gridjs-pagination">
+              <ngb-pagination
+                (pageChange)="loadPage($event)"
+                [collectionSize]="totalCount"
+                [page]="currentPage"
+                [pageSize]="pageSize"
+              >
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
+
+<ng-template #roleDataModal role="document" let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="rolecontentModal">Add New Role</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-hidden="true"
+      (click)="modal.dismiss('Cross click'); onCloseModal()"
+    ></button>
+  </div>
+  <form (ngSubmit)="createNewRole()" [formGroup]="roleAddForm">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="roleName" class="col-form-label">Role Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="roleName"
+          placeholder="Role name"
+          id="roleName"
+        />
+        <div
+          *ngIf="
+            isSubmitted && roleAddForm.get('roleName')?.hasError('required')
+          "
+        >
+          <label class="text-danger">Role name is required</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="modal.close('Close click'); onCloseModal()"
+      >
+        Close
+      </button>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #roleUpdateModal role="document" let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="roleUpdateContentModal">Edit Role</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-hidden="true"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <form (ngSubmit)="updateRole()" [formGroup]="roleUpdateForm">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="roleName" class="col-form-label">Role Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="roleName"
+          id="roleName"
+        />
+        <div
+          *ngIf="
+            isSubmitted && roleUpdateForm.get('roleName')?.hasError('required')
+          "
+        >
+          <label class="text-danger">Role name is required</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="modal.close('Close click'); onCloseModal()"
+      >
+        Close
+      </button>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+  </form>
+</ng-template>
+<ngx-ui-loader></ngx-ui-loader>

@@ -1,0 +1,428 @@
+<app-breadcrumbs
+  title="Add Product"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+
+<div
+  class="row"
+  *ngIf="!hasPermissionForProduct('CREATE_PRODUCT')"
+  style="
+    text-align: center;
+    padding: 10px;
+    background-color: #ffebee;
+    border: 1px solid #e57373;
+    border-radius: 5px;
+    color: #e57373;
+  "
+>
+  Access Denied: You do not have permission to continue.
+</div>
+
+<div class="row" *ngIf="hasPermissionForProduct('CREATE_PRODUCT')">
+  <div class="col-lg-12"> 
+    <div class="card">
+      <form
+        [formGroup]="productAddForm"
+        (ngSubmit)="addProduct()"
+        enctype="multipart/form-data"
+      >
+        <div class="card-header align-items-center d-flex">
+          <h4 class="card-title mb-0 flex-grow-1">Product Information</h4>
+        </div>
+        <!-- end card header -->
+        <div class="card-body">
+          <div class="live-preview">
+            <div class="row gy-4">
+              <div class="col-xxl-12 col-md-12">
+                <div>
+                  <label for="basiInput" class="form-label">Product Name</label>
+                  <input
+                    type="text"
+                    placeholder="Product Name"
+                    class="form-control"
+                    formControlName="name"
+                    id="basiInput"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      productAddForm.get('name')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    Product Name is required
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <label for="choices-single-default" class="form-label"
+                  >Category</label
+                >
+                <ng-select
+                  [items]="categories"
+                  formControlName="category"
+                  placeholder="Category"
+                  id="category"
+                  bindLabel="name"
+                >
+                  <ng-template ng-optgroup-tmp let-item="item">
+                    {{ item.name }}
+                  </ng-template>
+                </ng-select>
+                <p
+                  *ngIf="
+                    isSubmitted &&
+                    productAddForm.get('category')?.hasError('required')
+                  "
+                  class="text-danger"
+                >
+                  Category is required
+                </p>
+              </div>
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <label for="choices-single-default" class="form-label"
+                  >Volume</label
+                >
+                <ng-select
+                  [items]="volumes"
+                  formControlName="volume"
+                  placeholder="Volume"
+                  id="volume"
+                  bindLabel="name"
+                >
+                  <ng-template ng-optgroup-tmp let-item="item">
+                    {{ item.name }}
+                  </ng-template>
+                </ng-select>
+                <p
+                  *ngIf="
+                    isSubmitted &&
+                    productAddForm.get('volume')?.hasError('required')
+                  "
+                  class="text-danger"
+                >
+                  Volume is required
+                </p>
+              </div>
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="valueInput" class="form-label">SKU</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="sku"
+                    placeholder="SKU"
+                    id="valueInput"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      productAddForm.get('sku')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    SKU is required
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="valueInput" class="form-label"
+                    >Reorder Limit</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Recorder limit"
+                    id="rol"
+                    formControlName="rol"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      productAddForm.get('rol')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    ROL is required
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="valueInput" class="form-label"
+                    >Product Price</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Product price"
+                    id="price"
+                    formControlName="price"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      productAddForm.get('price')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    Price is required
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="valueInput" class="form-label"
+                    >Product Quantity</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Product quantity"
+                    id="qty"
+                    formControlName="qty"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      productAddForm.get('qty')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    Quantity is required
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <div class="form-check">
+                    <input class="form-check-input" [(ngModel)]="inStock" type="checkbox" id="formCheck2" [checked]="inStock" value="true">
+                    <label class="form-check-label" for="formCheck2">
+                      In Stock
+                    </label>
+                </div>
+                </div>
+              </div>
+              <!--end col-->
+
+              <div class="col-xxl-12 col-md-12">
+                <label class="form-label">Product Images</label>
+                <input
+                  type="file"
+                  #fileInput
+                  (change)="fileChangeEvent($event)"
+                  id="imageUpload"
+                  class="form-control"
+                />
+                <p
+                  *ngIf="isSubmitted && selectedFiles.length === 0"
+                  class="text-danger"
+                >
+                  At least one image is required
+                </p>
+
+                <div class="col-xxl-12 col-md-12" *ngIf="imageChangedEvent">
+                  <div class="cropper-container">
+                    <image-cropper
+                      [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="false"
+                      [aspectRatio]="cropperAspectRatio"
+                      format="png"
+                      (imageCropped)="imageCropped($event)"
+                      (imageLoaded)="imageLoaded($event)"
+                      (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()"
+                    ></image-cropper>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  *ngIf="imageChangedEvent"
+                  class="btn btn-primary mt-2"
+                  (click)="addCroppedImage()"
+                >
+                  Add Cropped Image
+                </button>
+
+                <button
+                  type="button"
+                  *ngIf="imageChangedEvent"
+                  class="btn btn-danger mt-2 btn-margin"
+                  (click)="removeCroppedImageEvent()"
+                >
+                  Reset
+                </button>
+
+                <div *ngIf="selectedFiles.length > 0" class="image-slider">
+                  <div
+                    *ngFor="let file of selectedFiles; let i = index"
+                    class="image-slide"
+                  >
+                    <img
+                      [src]="file.url"
+                      class="cropped-image"
+                      (click)="openModal(file.url)"
+                    />
+                    <button
+                      type="button"
+                      class="remove-icon"
+                      (click)="removeCroppedImage(i)"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+
+                <div *ngIf="showModal" class="modal" (click)="closeModal()">
+                  <span class="close" (click)="closeModal()">&times;</span>
+                  <div class="modal-content-container">
+                    <img
+                      [src]="modalImageSrc"
+                      [ngStyle]="{ 'max-width.%': '80', 'max-height.%': '80' }"
+                      class="modal-content"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!--end col-->
+
+              <div class="col-xxl-12 col-md-12">
+                <label class="form-label">Product Description</label>
+                <ckeditor
+                  [editor]="Editor"
+                  [config]="editorConfig"
+                  formControlName="description"
+                  [(ngModel)]="model.editorData"
+                ></ckeditor>
+                <p
+                  *ngIf="
+                    isSubmitted &&
+                    productAddForm.get('description')?.hasError('required')
+                  "
+                  class="text-danger"
+                >
+                  Description is required
+                </p>
+              </div>
+              <!--end col-->
+
+              <div class="col-xxl-12 col-md-12">
+                <label for="choices-single-default" class="form-label"
+                  >Additional Info</label
+                >
+                <div class="input-box skills" formArrayName="items">
+                  <div
+                    class="column"
+                    *ngFor="let control of getControls(); let i = index"
+                  >
+                    <div [formGroupName]="i">
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="card mb-3">
+                            <div class="card-body">
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="mb-3">
+                                    <label class="form-label">Title</label>
+                                    <input
+                                      formControlName="title"
+                                      type="text"
+                                      placeholder="Title"
+                                      class="form-control"
+                                    />
+                                    <p
+                                      *ngIf="
+                                        isSubmitted &&
+                                        control
+                                          .get('title')
+                                          ?.hasError('required')
+                                      "
+                                      class="text-danger"
+                                    >
+                                      Title is required
+                                    </p>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <!-- Example Textarea -->
+                                  <div class="mb-3">
+                                    <label class="form-label"
+                                      >Description</label
+                                    >
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Description"
+                                      id="exampleFormControlTextarea5"
+                                      formControlName="description"
+                                      rows="3"
+                                    ></textarea>
+                                    <p
+                                      *ngIf="
+                                        isSubmitted &&
+                                        control
+                                          .get('description')
+                                          ?.hasError('required')
+                                      "
+                                      class="text-danger"
+                                    >
+                                      Description is required
+                                    </p>
+                                  </div>
+                                </div>
+                                <div class="col-4">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger"
+                                    (click)="deleteInfo(i)"
+                                  >
+                                    <i class="ri-delete-bin-6-line"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="hideButton < 2" class="col-md-4">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="addInfo()"
+                  >
+                    <i class="ri-add-line"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--end row-->
+          </div>
+        </div>
+        <div class="card-footer custom-tr">
+          <button
+            type="submit"
+            class="btn btn-primary waves-effect waves-light"
+          >
+            Save Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!--end col-->
+</div>
+<!--end row-->
+<ngx-ui-loader></ngx-ui-loader>

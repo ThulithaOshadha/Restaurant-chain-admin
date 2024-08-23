@@ -1,0 +1,158 @@
+<app-breadcrumbs
+  title="Role Permissions"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+
+<!-- <div class="row">
+    <div class="col-12">
+        <div class="card">  
+            <div class="card-body">
+                <div class="col-md-6">
+                    <label for="roleSelect" class="form-label">Select Role</label>
+                    <select class="form-select mb-3" id="roleSelect" [(ngModel)]="selectedRole" (change)="onRoleChange()" aria-label="Default select example">
+                        <option selected disabled>Select Role</option>
+                        @for (item of roles; track item; let i = $index) {
+                            <option value="{{item.id}}">{{item.name}}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="live-preview">
+                    <div class="row">
+                        <div class="col-md-6">
+                                <div>
+                                    @for (item of permissions; track item) {
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox"(change)="addToSelectedItems(item)"  id="formCheck_{{item.id}}" [checked]="isSelected(item.id)">
+                                            <label class="form-check-label" for="formCheck6">
+                                                {{item.name}}
+                                            </label>
+                                        </div>  
+                                    }  
+                                </div>
+                        </div>
+
+                  
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="roleChange" class="card-footer custom-tr">
+                <button
+                type="button"
+                (click)="saveRolePermissions()"
+                [disabled]="isSubmitted"
+                class="btn btn-primary waves-effect waves-light"
+              >
+                Save
+              </button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div
+  class="row"
+  *ngIf="!hasPermissionForPermissionTasks('VIEW_PERMISSION')"
+  style="
+    text-align: center;
+    padding: 10px;
+    background-color: #ffebee;
+    border: 1px solid #e57373;
+    border-radius: 5px;
+    color: #e57373;
+  "
+>
+  Access Denied: You do not have permission to continue.
+</div>
+
+<div class="row" *ngIf="hasPermissionForPermissionTasks('VIEW_PERMISSION')">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="col-md-6">
+          <label for="roleSelect" class="form-label">Select Role</label>
+          <select
+            class="form-select mb-3"
+            placeholder="Select a Country"
+            id="roleSelect"
+            [(ngModel)]="selectedRole"
+            (change)="onRoleChange()"
+            aria-label="Default select example"
+          >
+            <option selected disabled>Select Role</option>
+            @for (item of roles; track item; let i = $index) {
+            <option value="{{ item.id }}">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-gridjs">
+            <thead>
+              <tr>
+                <th class="sort"></th>
+                <th class="sort">Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of permissions; track item; let i = $index) {
+              <tr>
+                <td>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    (change)="addToSelectedItems(item)"
+                    id="formCheck_{{ item.id }}"
+                    [checked]="isSelected(item.id)"
+                  />
+                </td>
+                <td>
+                  {{ item.name }}
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="row justify-content-md-between align-items-md-center">
+          <div class="col-sm-12 col-md-5">
+            <div
+              class="dataTables_info mb-2"
+              id="tickets-table_info"
+              role="status"
+              aria-live="polite"
+            >
+              <!-- {{ calculateEntryRange() }} -->
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="text-md-right float-md-end gridjs-pagination">
+              <!-- <ngb-pagination
+                        (pageChange)="loadPage($event)"
+                        [collectionSize]="totalCount"
+                        [page]="currentPage"
+                        [pageSize]="pageSize"
+                      >
+                      </ngb-pagination> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end card body -->
+      <div *ngIf="roleChange" class="card-footer custom-tr">
+        <button
+          *ngIf="hasPermissionForPermissionTasks('ASSIGN_ROLE_PERMISSION')"
+          type="button"
+          (click)="saveRolePermissions()"
+          [disabled]="isSubmitted"
+          class="btn btn-primary waves-effect waves-light"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
+<ngx-ui-loader></ngx-ui-loader>
