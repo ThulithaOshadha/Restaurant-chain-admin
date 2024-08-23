@@ -37,11 +37,11 @@ export class RightsidebarComponent implements OnInit {
   constructor(private eventService: EventService, private offcanvasService: NgbOffcanvas, private store: Store<RootReducerState>) { }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      if (this.offcanvasService.hasOpenOffcanvas() == false) {
-        this.openEnd(this.filtetcontent);
-      };
-    }, 1000);
+    // setTimeout(() => {
+    //   if (this.offcanvasService.hasOpenOffcanvas() == false) {
+    //     this.openEnd(this.filtetcontent);
+    //   };
+    // }, 1000);
 
     this.store.select('layout').subscribe((data) => {
       this.layout = data.LAYOUT;
@@ -92,10 +92,10 @@ export class RightsidebarComponent implements OnInit {
   }
 
   // When the user clicks on the button, scroll to the top of the document
-  topFunction() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-  }
+  // topFunction() {
+  //   document.body.scrollTop = 0;
+  //   document.documentElement.scrollTop = 0;
+  // }
 
   //  Filter Offcanvas Set
   openEnd(content: TemplateRef<any>) {

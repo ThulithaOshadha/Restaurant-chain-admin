@@ -9,6 +9,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SimplebarAngularModule } from 'simplebar-angular';
+import { ToastrModule } from 'ngx-toastr';
+
 
 // Swiper Slider
 import { SlickCarouselModule } from 'ngx-slick-carousel';
@@ -43,6 +45,11 @@ import { WidgetModule } from '../shared/widget/widget.module';
     WidgetModule,
     SlickCarouselModule,
     LightboxModule,
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

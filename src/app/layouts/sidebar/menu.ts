@@ -16,7 +16,7 @@ export const MENU: MenuItem[] = [
     id: 3,
     label: 'Product Management',
     icon: 'archive',
-    permissions: ['VIEW_PRODUCT'],
+    //permissions: ['VIEW_PRODUCT'],
     subItems: [
       {
         id: 10,

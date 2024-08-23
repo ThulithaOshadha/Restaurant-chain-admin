@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RoleService } from 'src/app/services/role.service';
-import { RolePermissionService } from 'src/app/services/role-permission.service';
 import { Role } from 'src/app/models/role-permission/role.model';
 import { Permission } from 'src/app/models/role-permission/permission.model';
 import { ApiResponse } from 'src/app/models/api-response.model';
@@ -15,6 +14,7 @@ import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { GeneralUtilityService } from 'src/app/services/util.service';
 import { result } from 'lodash';
 import { hasPermission } from 'src/app/store';
+import { RolePermissionService } from 'src/app/services/role-permission.service';
 
 @Component({
   selector: 'app-permissions',
@@ -97,34 +97,10 @@ export class PermissionsComponent {
     this.getAllPermissions(pageNumber);
   }
 
-  // calculateEntryRange(): string {
-  //   return this.generalUtilityService.getTblPaginationEntryRange(
-  //     this.currentPage,
-  //     this.pageSize,
-  //     this.totalCount
-  //   );
-  // }
-
   isSelected(itemId: any): boolean {
     return this.selectedPermissions.includes(itemId);
   }
 
-  // addToSelectedItems(item: any) {
-  //   let index = -1;
-  //   console.log("Item",item);
-  //   for (let i = 0; i < this.selectedPermissions.length; i++) {
-  //     if (this.selectedPermissions[i].id === item.id) {
-  //       index = i;
-  //       break;
-  //     }
-  //   }
-  //   if (index === -1) {
-  //     this.selectedPermissions.push(item.id);
-  //   } else {
-  //     this.selectedPermissions.splice(index, 1);
-  //   }
-  //   console.log("selected Items",this.selectedPermissions);
-  // }
   addToSelectedItems(item: any) {
     console.log("Item", item);
 
@@ -180,15 +156,6 @@ export class PermissionsComponent {
       }
       
     });
-    /* this.rolePermissionService.assignRolePermission(data).subscribe({
-      next: (res:any) => {
-        this.isSubmitted = false;
-        this.toastr.success("Role Permission Updated", "Success!");
-      },
-      error: (e) => {
-        this.isSubmitted = false;
-      },
-    });
-    this.ngxLoader.stop(); */
+    
   }
 }

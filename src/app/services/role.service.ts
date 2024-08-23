@@ -21,7 +21,7 @@ export class RoleService {
     let endpoint = `${getAllRolesURL}`;
     if(pageNumber) {
       endpoint += `?pages=${pageNumber}&limit=${pageSize}`;
-    }
+    }    
     return this.http.get<ApiResponse>(endpoint);
   }
 

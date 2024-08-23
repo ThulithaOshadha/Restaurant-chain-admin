@@ -57,11 +57,12 @@ export class RolesComponent {
   }
 
   getAllRoles(pageNumber?: number, pageSize?: number) {
-    this.ngxLoader.start();
+    this.ngxLoader.start();    
     this.roleService.getAllRoles(pageNumber, pageSize).subscribe((response) => {
       this.roles = response.data.records;
       this.totalCount = response.data.totalRecords;
     });
+    
     this.ngxLoader.stop();
   }
 
@@ -94,7 +95,7 @@ export class RolesComponent {
         },
       });
     } else {
-      this.toastr.warning('Role name is invalid !', 'warning');
+      //this.toastr.warning('Role name is invalid !', 'warning');
     }
 
     this.ngxLoader.stop();

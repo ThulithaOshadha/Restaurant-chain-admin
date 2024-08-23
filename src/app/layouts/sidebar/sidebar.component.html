@@ -64,7 +64,8 @@
                         @for(subSubitem of subitem.subItems;track $index){
                         <li class="nav-item">
                           @if(hasItems(subSubitem)){
-                          <a class="nav-link" href="javascript:void(0);" [attr.data-parent]="subSubitem.parentId" data-bs-toggle="collapse" [attr.aria-expanded]="!subSubitem.isCollapsed" (click)="toggleItem(subSubitem)">
+                          <a class="nav-link" href="javascript:void(0);" [attr.data-parent]="subSubitem.parentId" data-bs-toggle="collapse"
+                           [attr.aria-expanded]="!subSubitem.isCollapsed" (click)="toggleItem(subSubitem)">
                             {{ subSubitem.label | translate}}
                             @if(subSubitem.badge){
                             <span class="badge badge-pill {{subSubitem.badge.variant}}">{{subSubitem.badge.text
