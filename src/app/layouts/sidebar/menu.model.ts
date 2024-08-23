@@ -9,4 +9,6 @@ export interface MenuItem {
   parentId?: number;
   isLayout?: boolean;
   isCollapsed?: any;
+  roles?:string[];
+  permissions?:string[];
 }
