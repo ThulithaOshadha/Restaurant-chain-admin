@@ -1,7 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ProductService } from 'src/app/services/product.service';
 import { GeneralUtilityService } from 'src/app/services/util.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +13,7 @@ import { ApiResponse } from 'src/app/models/api-response.model';
 import { NgxUiLoaderModule, NgxUiLoaderService } from 'ngx-ui-loader';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { hasPermission } from 'src/app/store';
+import { ProductService } from 'src/app/services/product.service';
 
 interface SelectedFile {
   file: File;
@@ -118,7 +118,6 @@ export class EditProductComponent {
     this.ngxLoader.start();
     this.getProductDetails(this.productId);
     this.getAllCategories();
-    this.getAllVolumes();
     this.productUpdateForm = new FormGroup({
       name: new FormControl("", [Validators.required]),
       category: new FormControl("", [Validators.required]),
@@ -143,11 +142,7 @@ export class EditProductComponent {
     });
   }
 
-  getAllVolumes(pageNumber?: number) {
-    this.productService.getAllVolumes(pageNumber).subscribe((response) => {
-      this.volumes = response.data.records;
-    });
-  }
+  
 
   getProductDetails(productId: any) {
     this.ngxLoader.start();

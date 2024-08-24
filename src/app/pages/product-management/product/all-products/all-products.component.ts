@@ -5,11 +5,11 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { ProductService } from 'src/app/services/product.service';
 import Swal from 'sweetalert2';
 import { ApiResponse } from 'src/app/models/api-response.model';
 import { NgxUiLoaderModule, NgxUiLoaderService } from 'ngx-ui-loader';
 import { hasPermission } from 'src/app/store';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-all-products',

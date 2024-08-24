@@ -10,7 +10,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { ProductService } from "src/app/services/product.service";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { GeneralUtilityService } from "src/app/services/util.service";
@@ -21,6 +20,7 @@ import { Router } from "@angular/router";
 import { NgxUiLoaderModule, NgxUiLoaderService } from "ngx-ui-loader";
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { hasPermission } from "src/app/store";
+import { ProductService } from "src/app/services/product.service";
 
 interface SelectedFile {
   file: File;
@@ -112,7 +112,6 @@ export class AddProductComponent {
     }
     this.ngxLoader.start();
     this.getAllCategories();
-    this.getAllVolumes();
     this.productAddForm = new FormGroup({
       name: new FormControl("", [Validators.required]),
       category: new FormControl("", [Validators.required]),
@@ -137,11 +136,7 @@ export class AddProductComponent {
     });
   }
 
-  getAllVolumes(pageNumber?: number) {
-    this.productService.getAllVolumes(pageNumber).subscribe((response) => {
-      this.volumes = response.data.records;
-    });
-  }
+
 
 
   fileChangeEvent(event: any): void {
@@ -261,20 +256,12 @@ export class AddProductComponent {
 
             const productAddPayload = {
               name: this.productAddForm.value.name,
-              categoryId: this.productAddForm.value.category.id,
-              volumeId: this.productAddForm.value.volume.id,
-              isPack: true,
-              isOutOfStock: this.inStock,
-              sku: this.productAddForm.value.sku,
-              rol: this.productAddForm.value.rol,
-              productAdditionalDetails: this.productAddForm.value.items
-                ? this.productAddForm.value.items
-                : {},
-              sellingPrice: this.productAddForm.value.price,
-              qty: this.productAddForm.value.qty,
+              price: this.productAddForm.value.price,
               files: this.images,
               description: this.model.editorData,
             };
+            console.log('productAddPayload ========= ',productAddPayload);
+            
 
             const productCreateRes$ =
               this.productService.createProduct(productAddPayload);

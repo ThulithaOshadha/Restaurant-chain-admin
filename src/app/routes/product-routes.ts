@@ -14,9 +14,9 @@ export const ProductRoutes = {
     categoryDeleteURL : `${apiURL}/admin/category`,
 
     // product
-    createProductURL : `${apiURL}/product`,
-    getAllProductsURL : `${apiURL}product`,
-    deleteProductURL : `${apiURL}/product`,
-    productDetailsURL : `${apiURL}/product`,
-    productUpdateURL : `${apiURL}/product`
-}
+    createProductURL : `${apiURL}/products`,
+    getAllProductsURL : `${apiURL}/products`,
+    deleteProductURL : `${apiURL}/products`,
+    productDetailsURL : `${apiURL}/products`,
+    productUpdateURL : `${apiURL}/products`
+} 

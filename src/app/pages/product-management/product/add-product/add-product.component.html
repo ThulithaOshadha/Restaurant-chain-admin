@@ -55,103 +55,7 @@
                 </div>
               </div>
               <!--end col-->
-              <div class="col-xxl-6 col-md-6">
-                <label for="choices-single-default" class="form-label"
-                  >Category</label
-                >
-                <ng-select
-                  [items]="categories"
-                  formControlName="category"
-                  placeholder="Category"
-                  id="category"
-                  bindLabel="name"
-                >
-                  <ng-template ng-optgroup-tmp let-item="item">
-                    {{ item.name }}
-                  </ng-template>
-                </ng-select>
-                <p
-                  *ngIf="
-                    isSubmitted &&
-                    productAddForm.get('category')?.hasError('required')
-                  "
-                  class="text-danger"
-                >
-                  Category is required
-                </p>
-              </div>
-              <!--end col-->
-              <div class="col-xxl-6 col-md-6">
-                <label for="choices-single-default" class="form-label"
-                  >Volume</label
-                >
-                <ng-select
-                  [items]="volumes"
-                  formControlName="volume"
-                  placeholder="Volume"
-                  id="volume"
-                  bindLabel="name"
-                >
-                  <ng-template ng-optgroup-tmp let-item="item">
-                    {{ item.name }}
-                  </ng-template>
-                </ng-select>
-                <p
-                  *ngIf="
-                    isSubmitted &&
-                    productAddForm.get('volume')?.hasError('required')
-                  "
-                  class="text-danger"
-                >
-                  Volume is required
-                </p>
-              </div>
-              <!--end col-->
-              <div class="col-xxl-6 col-md-6">
-                <div>
-                  <label for="valueInput" class="form-label">SKU</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="sku"
-                    placeholder="SKU"
-                    id="valueInput"
-                  />
-                  <p
-                    *ngIf="
-                      isSubmitted &&
-                      productAddForm.get('sku')?.hasError('required')
-                    "
-                    class="text-danger"
-                  >
-                    SKU is required
-                  </p>
-                </div>
-              </div>
-              <!--end col-->
-              <div class="col-xxl-6 col-md-6">
-                <div>
-                  <label for="valueInput" class="form-label"
-                    >Reorder Limit</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    placeholder="Recorder limit"
-                    id="rol"
-                    formControlName="rol"
-                  />
-                  <p
-                    *ngIf="
-                      isSubmitted &&
-                      productAddForm.get('rol')?.hasError('required')
-                    "
-                    class="text-danger"
-                  >
-                    ROL is required
-                  </p>
-                </div>
-              </div>
+              
               <!--end col-->
               <div class="col-xxl-6 col-md-6">
                 <div>
@@ -179,41 +83,11 @@
               <!--end col-->
 
               <div class="col-xxl-6 col-md-6">
-                <div>
-                  <label for="valueInput" class="form-label"
-                    >Product Quantity</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    placeholder="Product quantity"
-                    id="qty"
-                    formControlName="qty"
-                  />
-                  <p
-                    *ngIf="
-                      isSubmitted &&
-                      productAddForm.get('qty')?.hasError('required')
-                    "
-                    class="text-danger"
-                  >
-                    Quantity is required
-                  </p>
-                </div>
+                
               </div>
               <!--end col-->
 
-              <div class="col-xxl-6 col-md-6">
-                <div>
-                  <div class="form-check">
-                    <input class="form-check-input" [(ngModel)]="inStock" type="checkbox" id="formCheck2" [checked]="inStock" value="true">
-                    <label class="form-check-label" for="formCheck2">
-                      In Stock
-                    </label>
-                </div>
-                </div>
-              </div>
-              <!--end col-->
+              
 
               <div class="col-xxl-12 col-md-12">
                 <label class="form-label">Product Images</label>

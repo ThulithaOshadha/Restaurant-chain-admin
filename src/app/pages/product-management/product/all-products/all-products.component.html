@@ -51,7 +51,7 @@
               @for (item of products; track item; let i = $index) {
               <tr>
                 <td>{{ item.name }}</td>
-                <td>{{ item.category.name }}</td>
+                <td>{{ null }}</td>
                 <td>
                   @if(item.status == 1) {
                   <span class="badge bg-success-subtle text-success"
@@ -63,7 +63,7 @@
                   >
                   }
                 </td>
-                <td class="custom-tr">{{ item.sellingPrice }}</td>
+                <td class="custom-tr">{{ item.price }}</td>
                 <td>
                   <button
                     *ngIf="hasPermissionForProduct('UPDATE_PRODUCT')"

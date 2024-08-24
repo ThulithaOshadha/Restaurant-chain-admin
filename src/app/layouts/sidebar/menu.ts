@@ -60,6 +60,13 @@ export const MENU: MenuItem[] = [
     ]
   },
   {
+    id: 14,
+    label: 'Branch Management',
+    icon: 'home',
+    link: '/branch'
+  },
+
+  {
     id: 6,
     label: 'User Management',
     icon: 'user',
@@ -80,5 +87,5 @@ export const MENU: MenuItem[] = [
       },
     ]
   },
- 
+
 ];
