@@ -1,0 +1,150 @@
+<app-breadcrumbs
+  title="Add Facility"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+
+<div
+  class="row"
+  *ngIf="!hasPermissionForProduct('CREATE_PRODUCT')"
+  style="
+    text-align: center;
+    padding: 10px;
+    background-color: #ffebee;
+    border: 1px solid #e57373;
+    border-radius: 5px;
+    color: #e57373;
+  "
+>
+  Access Denied: You do not have permission to continue.
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <form
+        [formGroup]="facilityAddForm"
+        (ngSubmit)="addFacility()"
+        enctype="multipart/form-data"
+      >
+        <div class="card-header align-items-center d-flex">
+          <h4 class="card-title mb-0 flex-grow-1">Facility Information</h4>
+        </div>
+        <!-- end card header -->
+        <div class="card-body">
+          <div class="live-preview">
+            <div class="row gy-4">
+              <div class="col-xxl-12 col-md-12">
+                <div>
+                  <label for="basiInput" class="form-label">Facility Name</label>
+                  <input
+                    type="text"
+                    placeholder="Facility Name"
+                    class="form-control"
+                    formControlName="name"
+                    id="basiInput"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      facilityAddForm.get('name')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                  Facility Name is required
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="valueInput" class="form-label"
+                    >Facility Price</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Facility price"
+                    id="price"
+                    formControlName="price"
+                  />
+                 
+                </div>
+              </div>
+              <!--end col-->
+
+              <div class="col-xxl-6 col-md-6"></div>
+              <!--end col-->
+
+              <div class="col-xxl-12 col-md-12">
+                <label class="form-label">Facility Images</label>
+
+                
+                <form (submit)="onSubmit()" enctype="multipart/form-data" class="upload-form">
+                  <div class="file-input-container">
+                    <input type="file" (change)="onFileSelected($event)" class="custom-file-input" />
+                  </div>
+                  <button type="submit" class="btn btn-upload">Upload</button>
+                </form>
+                
+
+                <!-- Image Preview -->
+                <div *ngIf="uploadedImageUrl" class="image-preview-container">
+                  <label class="form-label">Image Preview</label>
+                  <div class="image-preview">
+                    <img [src]="uploadedImageUrl" alt="Uploaded Image" />
+                  </div>
+                </div>
+
+                <div *ngIf="showModal" class="modal" (click)="closeModal()">
+                  <span class="close" (click)="closeModal()">&times;</span>
+                  <div class="modal-content-container">
+                    <img
+                      [src]="modalImageSrc"
+                      [ngStyle]="{ 'max-width.%': '80', 'max-height.%': '80' }"
+                      class="modal-content"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!--end col-->
+
+              <div class="col-xxl-12 col-md-12">
+                <label class="form-label">Facility Description</label>
+                <ckeditor
+                  [editor]="Editor"
+                  [config]="editorConfig"
+                  formControlName="description"
+                  [(ngModel)]="model.editorData"
+                ></ckeditor>
+                <p
+                  *ngIf="
+                    isSubmitted &&
+                    facilityAddForm.get('description')?.hasError('required')
+                  "
+                  class="text-danger"
+                >
+                  Description is required
+                </p>
+              </div>
+              <!--end col-->
+            </div>
+            <!--end row-->
+          </div>
+        </div>
+        <div class="card-footer custom-tr">
+          <button
+            type="submit"
+            class="btn btn-primary waves-effect waves-light"
+          >
+            Save Facility
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!--end col-->
+</div>
+<!--end row-->
+<ngx-ui-loader></ngx-ui-loader>

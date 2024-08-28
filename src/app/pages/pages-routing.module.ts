@@ -12,6 +12,8 @@ import { QueryComponent } from './queries/query.component';
 import { AllStaffComponent } from './user-management/staff-management/all-staff/staff-management.component';
 import { AddStaffComponent } from './user-management/staff-management/add-staff/add-staff-management.component';
 import { UpdateStaffComponent } from './user-management/staff-management/update-staff/update-staff-management.component';
+import { CustomerAllDetailsComponent } from './user-management/customer-management/customer-management.component';
+import { FacilitiesDetailsComponent } from './facilities/all-facilities/all-facility.component';
 
 // Component pages
 
@@ -69,6 +71,16 @@ const routes: Routes = [
   {
     path: "all-staff/update/:id",
     component: UpdateStaffComponent
+  }
+  ,
+  {
+    path: "customer",
+    component: CustomerAllDetailsComponent
+  }
+  ,
+  {
+    path: "facilities",
+    component: FacilitiesDetailsComponent
   }
 
 
