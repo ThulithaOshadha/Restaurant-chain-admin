@@ -108,70 +108,65 @@ export class EditProductComponent {
     };
 
     // Check if CKEditor is loaded
-    if (ClassicEditor) {
-      // Remove the image upload feature dynamically
-      ClassicEditor.defaultConfig = {
-        ...ClassicEditor.defaultConfig,
-        image: { upload: { enabled: false } },
-      };
-    }
+
     this.ngxLoader.start();
     this.getProductDetails(this.productId);
-    this.getAllCategories();
+    // this.getAllCategories();
     this.productUpdateForm = new FormGroup({
       name: new FormControl("", [Validators.required]),
-      category: new FormControl("", [Validators.required]),
-      volume: new FormControl("", [Validators.required]),
-      sku: new FormControl("", [Validators.required]),
-      rol: new FormControl("", [Validators.required]),
       price: new FormControl("", [Validators.required]),
-      qty: new FormControl("", [Validators.required]),
       description: new FormControl("", [Validators.required]),
-      items: new FormArray([]),
     });
     this.ngxLoader.stop();
+  }
+
+  uploadedImageUrl: string | null = null;
+  uploadImage: any;
+  newUploadedImage: any;
+
+  onSubmit() {
+    if (this.selectedFile) {
+      console.log('this.selectedFile ============= ', this.selectedFile);
+
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+      this.utilService.fileUpload(formData).subscribe({
+        next: (response) => {
+          this.newUploadedImage = response.data;
+          this.uploadedImageUrl = response.data.path;
+          console.log('File uploaded successfully', response);
+          console.log('File uploaded uploadedImageUrl', this.uploadedImageUrl);
+        },
+        error: (err) => {
+          console.error('Upload failed', err);
+        }
+      });
+    } else {
+      console.error('No file selected!');
+    }
   }
 
   hasPermissionForProduct(permission: string) {
     return hasPermission(permission);
   }
 
-  getAllCategories(pageNumber?: number) {
-    this.productService.getAllCategories(pageNumber).subscribe((response) => {
-      this.categories = response.data.records;
-    });
-  }
 
-  
+
 
   getProductDetails(productId: any) {
     this.ngxLoader.start();
     this.productService.getProductDetails(productId).subscribe((response: ApiResponse) => {
+
       this.product = response.data;
-      this.inStock = response.data.isOutOfStock;
-      // console.log(this.product.product.productAdd);
-
-      let itemsForm = <FormArray><unknown>this.productUpdateForm.controls['items'];
-      this.product.product.productAdd.forEach((element: any) => {
-        itemsForm.push(new FormGroup({
-          title: new FormControl(element.title),
-          description: new FormControl(element.description),
-        }));
+      response.data.files.forEach((file: any) => {
+        this.images.push({ id: file.id, path: file.path });
       });
 
-      response.data.product.files.forEach((file: any) => {
-        this.images.push({ id: file.file.id, path: file.file.path });
-      });
-      // this.productUpdateForm.value.items = this.product.product.productAdd;
+
       this.productUpdateForm.patchValue({
-        name: this.product.product.name,
-        category: this.product.product.category,
-        volume: this.product.product.volume,
-        sku: this.product.product.sku,
-        rol: this.product.product.rol,
-        price: this.product.product.sellingPrice,
-        qty: this.product.stock.availableQty,
-        description: this.product.product.description,
+        name: this.product.name,
+        price: this.product.price,
+        description: this.product.description,
       });
     });
     this.ngxLoader.stop();
@@ -256,24 +251,12 @@ export class EditProductComponent {
     return (this.productUpdateForm.get("items") as FormArray).controls;
   }
 
-  addItemSubForm() {
-    return new FormGroup({
-      title: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
-    });
+  selectedFile: File | null = null;
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
   }
 
-  addInfo() {
-    this.hideButton++;
-    const form = <FormArray><unknown>this.productUpdateForm.controls['items'];
-    form.push(this.addItemSubForm());
-  }
 
-  deleteInfo(index: number) {
-    this.hideButton--;
-    const controls = <FormArray>this.productUpdateForm.get("items");
-    controls.removeAt(index);
-  }
 
   async updateProduct() {
 
@@ -281,59 +264,37 @@ export class EditProductComponent {
     this.isSubmitted = true;
     this.ngxLoader.start();
 
-    if (this.images.length > 0 || this.selectedFiles.length > 0) {
-      if (this.productUpdateForm.valid) {
-        const formData = new FormData();
+    if (this.productUpdateForm.valid) {
 
-        for (const element of this.selectedFiles) {
-          formData.append('files', element.file);
-        }
-
-        const fileUploadRes$ = this.utilService.fileUpload(formData);
-        const fileUploadRes = lastValueFrom(fileUploadRes$);
-
-        fileUploadRes.then((response: ApiResponse) => {
-
-          if (response.data) {
-            // this.images = response.data.map((item:any) => ({ id: item.id }));
-            response.data.forEach((item: any) => {
-              // this.images.push(response.data.map((item:any) => ({ id: item.id })));
-              this.images.push({ id: item.id, path: item.path });
-            });
-
-            // console.log(this.images);
-
-            const productAddPayload = {
-              name: this.productUpdateForm.value.name,
-              categoryId: this.productUpdateForm.value.category.id,
-              volumeId: this.productUpdateForm.value.volume.id,
-              isPack: true,
-              isOutOfStock: this.inStock,
-              sku: this.productUpdateForm.value.sku,
-              rol: this.productUpdateForm.value.rol,
-              qty: this.productUpdateForm.value.qty,
-              productAdditionalDetails: this.productUpdateForm.value.items ? this.productUpdateForm.value.items : {},
-              sellingPrice: parseInt(this.productUpdateForm.value.price),
-              files: this.images,
-              description: this.model.editorData,
-            };
-
-            const productCreateRes$ = this.productService.updateProduct(this.product.product.id, productAddPayload);
-            const productCreateRes = lastValueFrom(productCreateRes$);
-
-            productCreateRes.then((response: ApiResponse) => {
-              this.isSubmitted = false;
-              this.toastr.success("Product updated successfully", "Success!");
-              this.router.navigate(['/product']);
-            }, (error) => {
-              this.isSubmitted = false;
-              console.log(error);
-            });
-          }
-
-        });
+      const formData = new FormData();
+      //let images;
+      if (this.newUploadedImage) {
+        this.images.push({id: this.newUploadedImage.id, path: this.newUploadedImage.path})
       }
+
+      const productAddPayload = {
+        name: this.productUpdateForm.value.name,
+        price: parseInt(this.productUpdateForm.value.price),
+        files: this.images,
+        description: this.model.editorData,
+      };
+
+      const productCreateRes$ = this.productService.updateProduct(this.product.id, productAddPayload);
+      const productCreateRes = lastValueFrom(productCreateRes$);
+
+      productCreateRes.then((response: ApiResponse) => {
+        this.isSubmitted = false;
+        this.toastr.success("Product updated successfully", "Success!");
+        this.router.navigate(['/product']);
+      }, (error) => {
+        this.isSubmitted = false;
+        console.log(error);
+      });
+
+
+
     }
+
     this.ngxLoader.stop();
   }
 

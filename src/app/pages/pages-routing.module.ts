@@ -8,47 +8,69 @@ import { AllProductsComponent } from './product-management/product/all-products/
 import { AddProductComponent } from './product-management/product/add-product/add-product.component';
 import { EditProductComponent } from './product-management/product/edit-product/edit-product.component';
 import { BranchComponent } from './branch-management/branch.component';
+import { QueryComponent } from './queries/query.component';
+import { AllStaffComponent } from './user-management/staff-management/all-staff/staff-management.component';
+import { AddStaffComponent } from './user-management/staff-management/add-staff/add-staff-management.component';
+import { UpdateStaffComponent } from './user-management/staff-management/update-staff/update-staff-management.component';
 
 // Component pages
 
 const routes: Routes = [
-    {
+  {
+    path: "",
+    component: DashboardComponent
+  },
+  {
+    path: "roles",
+    component: RolesComponent
+  },
+  {
+    path: "permissions",
+    component: PermissionsComponent
+  },
+  {
+    path: "product",
+    children: [
+      {
+        path: "categories",
+        component: CategoriesComponent,
+      },
+      {
         path: "",
-        component: DashboardComponent
-    },
-    {
-      path: "roles",
-      component: RolesComponent
-    },
-    {
-      path: "permissions",
-      component: PermissionsComponent
-    },
-    {
-      path: "product",
-      children: [
-        {
-          path: "categories",
-          component: CategoriesComponent,
-        },
-        {
-          path: "",
-          component: AllProductsComponent,
-        },
-        {
-          path: "add",
-          component: AddProductComponent,
-        },
-        {
-          path: "edit/:id",
-          component: EditProductComponent,
-        },
-      ]
-    },
-    {
-      path: "branch",
-      component: BranchComponent
-    }
+        component: AllProductsComponent,
+      },
+      {
+        path: "add",
+        component: AddProductComponent,
+      },
+      {
+        path: "edit/:id",
+        component: EditProductComponent,
+      },
+    ]
+  },
+  {
+    path: "branch",
+    component: BranchComponent
+  },
+  {
+    path: "query",
+    component: QueryComponent
+  },
+  {
+    path: "all-staff",
+    component: AllStaffComponent,
+
+  },
+  {
+    path: "all-staff/add",
+    component: AddStaffComponent,
+  },
+  {
+    path: "all-staff/update/:id",
+    component: UpdateStaffComponent
+  }
+
 
 ];
 

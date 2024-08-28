@@ -15,7 +15,7 @@ import { UtilRoutes } from '../routes/util-rotes';
  * @date 2024-03-17
  */
 
- const fileUploadMultipleURL = UtilRoutes.fileUploadMultipleURL;
+ const fileUploadMultipleURL = UtilRoutes.fileUploadURL;
 
 
 @Injectable({ providedIn: 'root' })
@@ -138,7 +138,9 @@ export class GeneralUtilityService {
     //     return new File([blob], filename);
     //   }
  
-    fileUpload(data: any): Observable<ApiResponse> {
+    fileUpload(data: FormData): Observable<ApiResponse> {
+        console.log('data ========file=========== ',data);
+        
         return this.http.post<ApiResponse>(fileUploadMultipleURL, data);
     }
 }

@@ -48,6 +48,8 @@ export class ProductService {
     return this.http.delete<ApiResponse>(categoryDeleteURL +'/'+ id);
   }
 
+  
+
   //products
 
   getAllProducts(pageNumber?:number,pageSize?:number) : Observable<any> {
@@ -59,6 +61,8 @@ export class ProductService {
   }
 
   createProduct(data: any): Observable<ApiResponse> {
+    console.log('data ========= ',data);
+    
     return this.http.post<ApiResponse>(createProductURL, data);
   }
 
@@ -67,6 +71,8 @@ export class ProductService {
   }
 
   getProductDetails(productId: any): Observable<ApiResponse> {
+    console.log('productId =============== ',`${productDetailsURL}/${productId}`);
+    
     return this.http.get<ApiResponse>(`${productDetailsURL}/${productId}`);
   }
 

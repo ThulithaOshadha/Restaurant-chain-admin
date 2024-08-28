@@ -1,0 +1,151 @@
+<app-breadcrumbs
+  title="Add Member"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <form [formGroup]="staffAddForm" (ngSubmit)="createStaff()">
+        <div class="card-header align-items-center d-flex">
+          <h4 class="card-title mb-0 flex-grow-1">Member Details</h4>
+        </div>
+        <!-- end card header -->
+        <div class="card-body">
+          <div class="live-preview">
+            <div class="row gy-4">
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="firstName"
+                    placeholder="First name"
+                    id="firstName"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      staffAddForm.get('firstName')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    First Name is required 
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="lastName" class="form-label">Last Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="lastName"
+                    placeholder="Last name"
+                    id="lastName"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      staffAddForm.get('lastName')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    Last Name is required
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="contactNo" class="form-label">Phone No</label>
+                  <input
+                    type="phone"
+                    class="form-control"
+                    formControlName="contactNo"
+                    placeholder="Contact no"
+                    id="contactNo"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      staffAddForm.get('contactNo')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    Phone No is required
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    formControlName="email"
+                    placeholder="Email"
+                    id="email"
+                  />
+                  <p
+                    *ngIf="
+                      isSubmitted &&
+                      staffAddForm.get('email')?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    Email is required
+                  </p>
+                </div>
+              </div>
+              <!--end col-->
+              
+              <!--end col-->
+              <div class="col-xxl-6 col-md-6">
+                <label for="choices-single-default" class="form-label"
+                  >Role</label
+                >
+                <ng-select
+                  [items]="roles"
+                  formControlName="role"
+                  placeholder="Role"
+                  id="role"
+                  bindLabel="name"
+                >
+                  <ng-template ng-optgroup-tmp let-item="item">
+                    {{ item.name }}
+                  </ng-template>
+                </ng-select>
+                <p
+                  *ngIf="
+                    isSubmitted && staffAddForm.get('role')?.hasError('required')
+                  "
+                  class="text-danger"
+                >
+                  Role is required
+                </p>
+              </div>
+              <!--end col-->
+            </div>
+            <!--end row-->
+          </div>
+        </div>
+        <div class="card-footer custom-tr">
+          <button
+            type="submit"
+            class="btn btn-primary waves-effect waves-light"
+          >
+            Create Member
+          </button>
+        </div> 
+      </form>
+    </div>
+  </div>
+  <!--end col-->
+</div>
+<!--end row-->
+<ngx-ui-loader></ngx-ui-loader>

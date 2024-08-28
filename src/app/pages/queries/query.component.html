@@ -1,0 +1,101 @@
+<app-breadcrumbs
+  title="Customer Queries"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- end row -->
+
+<div
+  class="row"
+  *ngIf="!hasPermissionForRoles('VIEW_ROLE')"
+  style="
+    text-align: center;
+    padding: 10px;
+    background-color: #ffebee;
+    border: 1px solid #e57373;
+    border-radius: 5px;
+    color: #e57373;
+  "
+>
+  Access Denied: You do not have permission to continue.
+</div>
+
+<div class="row" *ngIf="hasPermissionForRoles('VIEW_ROLE')">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Customer Queries</h4>
+      </div>
+      <!-- end card-header -->
+
+      <div class="card-body">
+        <div class="list-group">
+          <!-- Loop through queries -->
+          <div *ngFor="let query of queries" class="list-group-item d-flex flex-column">
+            <div class="d-flex justify-content-between mb-2">
+              <div>
+                <h5 class="mb-1">{{ query.user.firstName }} {{ query.user.lastName }}</h5>
+                <p class="mb-1">{{ query.queryText }}</p>
+              </div>
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="openReplyModal(query)"
+              >
+                Reply
+              </button>
+            </div>
+            <div class="d-flex justify-content-between">
+              <small class="text-muted">{{ query.createdAt | date }}</small>
+            </div>
+          </div>
+          <!-- End Loop -->
+        </div>
+      </div>
+      <!-- end card-body -->
+    </div>
+    <!-- end card -->
+
+    <!-- Reply Modal -->
+    <ng-template #replyModal let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title">Reply to Query</h5>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        ></button>
+      </div>
+      <form (ngSubmit)="sendReply()" [formGroup]="replyForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="replyMessage" class="col-form-label">Your Reply:</label>
+            <textarea
+              class="form-control"
+              id="replyMessage"
+              formControlName="message"
+              rows="4"
+              placeholder="Enter your reply here..."
+            ></textarea>
+            <div *ngIf="isSubmitted && replyForm.get('message')?.hasError('required')">
+              <label class="text-danger">Reply message is required</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-light"
+            (click)="modal.close('Close click')"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Send Reply</button>
+        </div>
+      </form>
+    </ng-template>
+    <!-- End Reply Modal -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->

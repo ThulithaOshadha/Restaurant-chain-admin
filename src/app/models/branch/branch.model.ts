@@ -1,6 +1,7 @@
 export class Branch {
     id?: string;
     name?: string;
+    description?: string;
     city?: City;
     status?: number;
 }

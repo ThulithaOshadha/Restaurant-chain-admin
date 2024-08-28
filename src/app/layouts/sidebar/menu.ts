@@ -65,6 +65,12 @@ export const MENU: MenuItem[] = [
     icon: 'home',
     link: '/branch'
   },
+  {
+    id: 15,
+    label: 'Customer Queries',
+    icon: 'book',
+    link: '/query'
+  },
 
   {
     id: 6,
@@ -75,17 +81,19 @@ export const MENU: MenuItem[] = [
     subItems: [
       {
         id: 7,
-        label: 'Add New User',
-        link: '/user-management/add',
+        label: 'Staff',
+        link: '/all-staff',
         parentId: 6,
       },
       {
         id: 8,
-        label: 'All Users',
-        link: '/user-management',
+        label: 'Customer',
+        link: '/customer-management',
         parentId: 6
       },
     ]
   },
+
+  
 
 ];

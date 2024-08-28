@@ -1,5 +1,5 @@
 <app-breadcrumbs
-  title="Branches"
+  title="Branche"
   [breadcrumbItems]="breadCrumbItems"
 ></app-breadcrumbs>
 <!-- end row -->
@@ -78,7 +78,7 @@
                     *ngIf="hasPermissionForRoles('DELETE_ROLE')"
                     type="button"
                     class="pl-5 btn btn-sm btn-danger waves-effect waves-light"
-                    (click)="deleteRole(item.id)"
+                    (click)="deleteBranch(item.id)"
                   >
                     Delete
                   </button>
@@ -130,7 +130,7 @@
       (click)="modal.dismiss('Cross click'); onCloseModal()"
     ></button>
   </div>
-  <form (ngSubmit)="createNewRole()" [formGroup]="roleAddForm">
+  <form (ngSubmit)="createNewBranch()" [formGroup]="roleAddForm">
     <div class="modal-body">
       <div class="mb-3">
         <label for="roleName" class="col-form-label">Branch Name:</label>
@@ -138,9 +138,26 @@
           type="text"
           class="form-control"
           formControlName="roleName"
-          placeholder="Role name"
+          placeholder="Branch name"
           id="roleName"
         />
+        <label for="branchDesc" class="col-form-label">Description:</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="branchDesc"
+          placeholder="Description"
+          id="branchDesc"
+        />
+        <!-- <label for="branchType" class="col-form-label">Branch Type:</label>
+        <select
+          class="form-control"
+          formControlName="branchType"
+          id="branchType"
+        >
+          <option value="" disabled selected>Select a city</option>
+          <option *ngFor="let cities of city" [value]="city.id">{{ city.name }}</option>
+        </select> -->
         <div
           *ngIf="
             isSubmitted && roleAddForm.get('roleName')?.hasError('required')
@@ -173,7 +190,7 @@
       (click)="modal.dismiss('Cross click')"
     ></button>
   </div>
-  <form (ngSubmit)="updateRole()" [formGroup]="roleUpdateForm">
+  <form (ngSubmit)="updateBranch()" [formGroup]="roleUpdateForm">
     <div class="modal-body">
       <div class="mb-3">
         <label for="roleName" class="col-form-label">Branch Name:</label>
@@ -183,6 +200,24 @@
           formControlName="roleName"
           id="roleName"
         />
+        <label for="branchDesc" class="col-form-label">Description:</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="branchDesc"
+          placeholder="Description"
+          id="branchDesc"
+        />
+        <!-- <label for="status" class="col-form-label">Status:</label>
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="status"
+            formControlName="status"
+          />
+          <label class="form-check-label" for="status"> Activate </label>
+        </div> -->
         <div
           *ngIf="
             isSubmitted && roleUpdateForm.get('roleName')?.hasError('required')

@@ -1,25 +1,13 @@
 <app-breadcrumbs
-  title="Products"
+  title="Customer Details"
   [breadcrumbItems]="breadCrumbItems"
 ></app-breadcrumbs>
 <!-- end row -->
 
-
-
 <div class="row">
   <div class="col-12">
     <div class="card">
-      <div
-        class="card-header custom-tr"
-        *ngIf="hasPermissionForProduct('CREATE_PRODUCT')"
-      >
-        <a
-          [routerLink]="['add']"
-          class="btn btn-primary waves-effect waves-light"
-        >
-          Add New Product &nbsp;<strong>+</strong>
-        </a>
-      </div>
+      
       <!-- end card header -->
 
       <div class="card-body">
@@ -27,18 +15,21 @@
           <table class="table table-gridjs">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th class="custom-tr">Price (LKR)</th>
-                <th>Action</th>
+                <th class="sort">First Name</th>
+                <th class="sort">Last Name</th>
+                <th class="sort">Email</th>
+                <th class="sort">Contact No</th>
+                <th class="sort">Status</th>
+                <th class="sort">Action</th>
               </tr>
             </thead>
             <tbody>
-              @for (item of products; track item; let i = $index) {
+              @for (item of users; track item; let i = $index) {
               <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ null }}</td>
+                <td>{{ item.firstName }}</td>
+                <td>{{ item.lastName }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.contactNo }}</td>
                 <td>
                   @if(item.status == 1) {
                   <span class="badge bg-success-subtle text-success"
@@ -50,25 +41,7 @@
                   >
                   }
                 </td>
-                <td class="custom-tr">{{ item.price }}</td>
-                <td>
-                  <button
-                    *ngIf="hasPermissionForProduct('UPDATE_PRODUCT')"
-                    type="button"
-                    class="btn btn-sm btn-primary custom-mr-5 waves-effect waves-light"
-                    [routerLink]="['/product/edit', item.id]"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    *ngIf="hasPermissionForProduct('DELETE_PRODUCT')"
-                    type="button"
-                    class="pl-5 btn btn-sm btn-danger waves-effect waves-light"
-                    (click)="deleteProduct(item.id)"
-                  >
-                    Delete
-                  </button>
-                </td>
+                
               </tr>
               }
             </tbody>
@@ -105,4 +78,5 @@
   <!-- end col -->
 </div>
 <!-- end row -->
+
 <ngx-ui-loader></ngx-ui-loader>

@@ -34,7 +34,7 @@ export class BranchService {
   }
 
   updateBranch(id:any,data: any): Observable<ApiResponse> {
-    return this.http.patch<ApiResponse>(branchUpdateURL +'/'+ id, data);
+    return this.http.put<ApiResponse>(branchUpdateURL +'/'+ id, data);
   }
 
   deleteBranch(id:any): Observable<ApiResponse> {

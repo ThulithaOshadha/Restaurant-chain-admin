@@ -8,5 +8,5 @@ export const UtilRoutes = {
 
     //file upload
     fileUploadURL : `${apiURL}/v1/files/upload`,
-    fileUploadMultipleURL : `${apiURL}/v1/files/uploadMultiple`,
+    fileUploadMultipleURL : `${apiURL}/v1/files/uploadMultiple/file`,
 }

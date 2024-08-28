@@ -19,7 +19,7 @@
 </div>
 
 <div class="row" *ngIf="hasPermissionForProduct('CREATE_PRODUCT')">
-  <div class="col-lg-12"> 
+  <div class="col-lg-12">
     <div class="card">
       <form
         [formGroup]="productAddForm"
@@ -55,7 +55,7 @@
                 </div>
               </div>
               <!--end col-->
-              
+
               <!--end col-->
               <div class="col-xxl-6 col-md-6">
                 <div>
@@ -82,79 +82,26 @@
               </div>
               <!--end col-->
 
-              <div class="col-xxl-6 col-md-6">
-                
-              </div>
+              <div class="col-xxl-6 col-md-6"></div>
               <!--end col-->
-
-              
 
               <div class="col-xxl-12 col-md-12">
                 <label class="form-label">Product Images</label>
-                <input
-                  type="file"
-                  #fileInput
-                  (change)="fileChangeEvent($event)"
-                  id="imageUpload"
-                  class="form-control"
-                />
-                <p
-                  *ngIf="isSubmitted && selectedFiles.length === 0"
-                  class="text-danger"
-                >
-                  At least one image is required
-                </p>
 
-                <div class="col-xxl-12 col-md-12" *ngIf="imageChangedEvent">
-                  <div class="cropper-container">
-                    <image-cropper
-                      [imageChangedEvent]="imageChangedEvent"
-                      [maintainAspectRatio]="false"
-                      [aspectRatio]="cropperAspectRatio"
-                      format="png"
-                      (imageCropped)="imageCropped($event)"
-                      (imageLoaded)="imageLoaded($event)"
-                      (cropperReady)="cropperReady()"
-                      (loadImageFailed)="loadImageFailed()"
-                    ></image-cropper>
+                
+                <form (submit)="onSubmit()" enctype="multipart/form-data" class="upload-form">
+                  <div class="file-input-container">
+                    <input type="file" (change)="onFileSelected($event)" class="custom-file-input" />
                   </div>
-                </div>
+                  <button type="submit" class="btn btn-upload">Upload</button>
+                </form>
+                
 
-                <button
-                  type="button"
-                  *ngIf="imageChangedEvent"
-                  class="btn btn-primary mt-2"
-                  (click)="addCroppedImage()"
-                >
-                  Add Cropped Image
-                </button>
-
-                <button
-                  type="button"
-                  *ngIf="imageChangedEvent"
-                  class="btn btn-danger mt-2 btn-margin"
-                  (click)="removeCroppedImageEvent()"
-                >
-                  Reset
-                </button>
-
-                <div *ngIf="selectedFiles.length > 0" class="image-slider">
-                  <div
-                    *ngFor="let file of selectedFiles; let i = index"
-                    class="image-slide"
-                  >
-                    <img
-                      [src]="file.url"
-                      class="cropped-image"
-                      (click)="openModal(file.url)"
-                    />
-                    <button
-                      type="button"
-                      class="remove-icon"
-                      (click)="removeCroppedImage(i)"
-                    >
-                      ×
-                    </button>
+                <!-- Image Preview -->
+                <div *ngIf="uploadedImageUrl" class="image-preview-container">
+                  <label class="form-label">Image Preview</label>
+                  <div class="image-preview">
+                    <img [src]="uploadedImageUrl" alt="Uploaded Image" />
                   </div>
                 </div>
 
@@ -190,97 +137,6 @@
                 </p>
               </div>
               <!--end col-->
-
-              <div class="col-xxl-12 col-md-12">
-                <label for="choices-single-default" class="form-label"
-                  >Additional Info</label
-                >
-                <div class="input-box skills" formArrayName="items">
-                  <div
-                    class="column"
-                    *ngFor="let control of getControls(); let i = index"
-                  >
-                    <div [formGroupName]="i">
-                      <div class="row">
-                        <div class="col-12">
-                          <div class="card mb-3">
-                            <div class="card-body">
-                              <div class="row">
-                                <div class="col-12">
-                                  <div class="mb-3">
-                                    <label class="form-label">Title</label>
-                                    <input
-                                      formControlName="title"
-                                      type="text"
-                                      placeholder="Title"
-                                      class="form-control"
-                                    />
-                                    <p
-                                      *ngIf="
-                                        isSubmitted &&
-                                        control
-                                          .get('title')
-                                          ?.hasError('required')
-                                      "
-                                      class="text-danger"
-                                    >
-                                      Title is required
-                                    </p>
-                                  </div>
-                                </div>
-                                <div class="col-12">
-                                  <!-- Example Textarea -->
-                                  <div class="mb-3">
-                                    <label class="form-label"
-                                      >Description</label
-                                    >
-                                    <textarea
-                                      class="form-control"
-                                      placeholder="Description"
-                                      id="exampleFormControlTextarea5"
-                                      formControlName="description"
-                                      rows="3"
-                                    ></textarea>
-                                    <p
-                                      *ngIf="
-                                        isSubmitted &&
-                                        control
-                                          .get('description')
-                                          ?.hasError('required')
-                                      "
-                                      class="text-danger"
-                                    >
-                                      Description is required
-                                    </p>
-                                  </div>
-                                </div>
-                                <div class="col-4">
-                                  <button
-                                    type="button"
-                                    class="btn btn-danger"
-                                    (click)="deleteInfo(i)"
-                                  >
-                                    <i class="ri-delete-bin-6-line"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div *ngIf="hideButton < 2" class="col-md-4">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    (click)="addInfo()"
-                  >
-                    <i class="ri-add-line"></i>
-                  </button>
-                </div>
-              </div>
             </div>
             <!--end row-->
           </div>

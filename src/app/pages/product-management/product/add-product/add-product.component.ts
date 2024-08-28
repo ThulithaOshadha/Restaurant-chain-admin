@@ -21,6 +21,7 @@ import { NgxUiLoaderModule, NgxUiLoaderService } from "ngx-ui-loader";
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { hasPermission } from "src/app/store";
 import { ProductService } from "src/app/services/product.service";
+import { HttpClient } from "@angular/common/http";
 
 interface SelectedFile {
   file: File;
@@ -33,7 +34,7 @@ interface SelectedFile {
   imports: [
     CommonModule,
     SharedModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule, 
     FormsModule,
     NgSelectModule,
     CKEditorModule,
@@ -111,29 +112,50 @@ export class AddProductComponent {
       };
     }
     this.ngxLoader.start();
-    this.getAllCategories();
+    //this.getAllCategories();
     this.productAddForm = new FormGroup({
       name: new FormControl("", [Validators.required]),
-      category: new FormControl("", [Validators.required]),
-      volume: new FormControl("", [Validators.required]),
-      sku: new FormControl("", [Validators.required]),
-      rol: new FormControl("", [Validators.required]),
       price: new FormControl("", [Validators.required]),
-      qty: new FormControl("", [Validators.required]),
       description: new FormControl("", [Validators.required]),
-      items: new FormArray([]),
+
     });
     this.ngxLoader.stop();
   }
 
-  hasPermissionForProduct(permission: string) {
-    return hasPermission(permission);
+  selectedFile: File | null = null;
+
+  constructor(private http: HttpClient) { }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
   }
 
-  getAllCategories(pageNumber?: number) {
-    this.productService.getAllCategories(pageNumber).subscribe((response) => {
-      this.categories = response.data.records;
-    });
+  uploadedImageUrl: string | null = null;
+  uploadImage: any;
+  onSubmit() {
+    if (this.selectedFile) {
+      console.log('this.selectedFile ============= ', this.selectedFile);
+
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+      this.utilService.fileUpload(formData).subscribe({
+        next: (response) => {
+          this.uploadImage = response.data;
+          this.uploadedImageUrl = response.data.path;
+          console.log('File uploaded successfully', response);
+          console.log('File uploaded uploadedImageUrl', this.uploadedImageUrl);
+        },
+        error: (err) => {
+          console.error('Upload failed', err);
+        }
+      });
+    } else {
+      console.error('No file selected!');
+    }
+  }
+
+  hasPermissionForProduct(permission: string) {
+    return hasPermission(permission);
   }
 
 
@@ -154,18 +176,18 @@ export class AddProductComponent {
     img.src = event.target.files[0].src;
   }
 
-  imageCropped(event: any) {
-    this.croppedImage = event.blob;
-  }
-  imageLoaded(event: any) {
-    // show cropper
-  }
-  cropperReady() {
-    // cropper ready
-  }
-  loadImageFailed() {
-    // show message
-  }
+  // imageCropped(event: any) {
+  //   this.croppedImage = event.blob;
+  // }
+  // imageLoaded(event: any) {
+  //   // show cropper
+  // }
+  // cropperReady() {
+  //   // cropper ready
+  // }
+  // loadImageFailed() {
+  //   // show message
+  // }
 
   addCroppedImage() {
     if (this.croppedImage) {
@@ -233,55 +255,58 @@ export class AddProductComponent {
   }
 
   async addProduct() {
+
     this.validateMessage = false;
     this.isSubmitted = true;
-    //this.selectedFiles = this.getDropzoneFiles();
     this.ngxLoader.start();
+
+
+
     if (this.productAddForm.valid) {
-      if (this.selectedFiles.length > 0) {
+      try {
         const formData = new FormData();
 
-        for (const element of this.selectedFiles) {
-          formData.append("files", element.file);
-        }
+        // Append the files to FormData and upload them
+        if (this.uploadImage) {
 
-        const fileUploadRes$ = this.utilService.fileUpload(formData);
-        const fileUploadRes = lastValueFrom(fileUploadRes$);
 
-        fileUploadRes.then((response: ApiResponse) => {
-          if (response.data) {
-            this.images = response.data.map((item: any) => ({ id: item.id }));
-            console.log(response.data);
-            console.log(this.productAddForm.value.items);
+          const images = [{
+            path: this.uploadImage.path,
+            id: this.uploadImage.id
+          }]
 
-            const productAddPayload = {
-              name: this.productAddForm.value.name,
-              price: this.productAddForm.value.price,
-              files: this.images,
-              description: this.model.editorData,
-            };
-            console.log('productAddPayload ========= ',productAddPayload);
-            
 
-            const productCreateRes$ =
-              this.productService.createProduct(productAddPayload);
-            const productCreateRes = lastValueFrom(productCreateRes$);
+          // Create the product payload
+          const productAddPayload = {
+            name: this.productAddForm.value.name,
+            price: this.productAddForm.value.price,
+            description: this.model.editorData,
+            files: images,
+          };
 
-            productCreateRes.then(
-              (response: ApiResponse) => {
-                this.isSubmitted = false;
-                this.toastr.success("Product added successfully", "Success!");
-                this.router.navigate(["/product"]);
-              },
-              (error) => {
-                this.isSubmitted = false;
-                console.log(error);
-              }
-            );
+          // Send the product data to the server
+          const productCreateRes$ = this.productService.createProduct(productAddPayload);
+          const productCreateRes = await lastValueFrom(productCreateRes$);
+
+          if (productCreateRes) {
+            this.isSubmitted = false;
+            this.toastr.success("Product added successfully", "Success!");
+            this.router.navigate(["/product"]);
           }
-        });
+
+        } else {
+          this.toastr.error("Please upload an image.", "Error!");
+        }
+      } catch (error) {
+        console.error("Error while adding product:", error);
+        this.isSubmitted = false;
+        this.toastr.error("An error occurred while adding the product.", "Error!");
       }
     }
+
     this.ngxLoader.stop();
   }
+
+
+
 }

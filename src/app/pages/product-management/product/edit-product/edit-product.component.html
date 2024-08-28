@@ -5,7 +5,7 @@
 
 <div
   class="row"
-  *ngIf="!hasPermissionForProduct('UPDATE_PRODUCT')"
+  *ngIf="!hasPermissionForProduct('CREATE_PRODUCT')"
   style="
     text-align: center;
     padding: 10px;
@@ -38,6 +38,7 @@
                   <label for="basiInput" class="form-label">Product Name</label>
                   <input
                     type="text"
+                    placeholder="Product Name"
                     class="form-control"
                     formControlName="name"
                     id="basiInput"
@@ -54,99 +55,7 @@
                 </div>
               </div>
               <!--end col-->
-              <div class="col-xxl-6 col-md-6">
-                <label for="choices-single-default" class="form-label"
-                  >Category</label
-                >
-                <ng-select
-                  [items]="categories"
-                  formControlName="category"
-                  id="category"
-                  bindLabel="name"
-                >
-                  <ng-template ng-optgroup-tmp let-item="item">
-                    {{ item.name }}
-                  </ng-template>
-                </ng-select>
-                <p
-                  *ngIf="
-                    isSubmitted &&
-                    productUpdateForm.get('category')?.hasError('required')
-                  "
-                  class="text-danger"
-                >
-                  Category is required
-                </p>
-              </div>
-              <!--end col-->
-              <div class="col-xxl-6 col-md-6">
-                <label for="choices-single-default" class="form-label"
-                  >Volume</label
-                >
-                <ng-select
-                  [items]="volumes"
-                  formControlName="volume"
-                  id="volume"
-                  bindLabel="name"
-                >
-                  <ng-template ng-optgroup-tmp let-item="item">
-                    {{ item.name }}
-                  </ng-template>
-                </ng-select>
-                <p
-                  *ngIf="
-                    isSubmitted &&
-                    productUpdateForm.get('volume')?.hasError('required')
-                  "
-                  class="text-danger"
-                >
-                  Volume is required
-                </p>
-              </div>
-              <!--end col-->
-              <div class="col-xxl-6 col-md-6">
-                <div>
-                  <label for="valueInput" class="form-label">SKU</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="sku"
-                    id="valueInput"
-                  />
-                  <p
-                    *ngIf="
-                      isSubmitted &&
-                      productUpdateForm.get('sku')?.hasError('required')
-                    "
-                    class="text-danger"
-                  >
-                    SKU is required
-                  </p>
-                </div>
-              </div>
-              <!--end col-->
-              <div class="col-xxl-6 col-md-6">
-                <div>
-                  <label for="valueInput" class="form-label"
-                    >Reorder Limit</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="rol"
-                    formControlName="rol"
-                  />
-                  <p
-                    *ngIf="
-                      isSubmitted &&
-                      productUpdateForm.get('rol')?.hasError('required')
-                    "
-                    class="text-danger"
-                  >
-                    ROL is required
-                  </p>
-                </div>
-              </div>
+
               <!--end col-->
               <div class="col-xxl-6 col-md-6">
                 <div>
@@ -156,6 +65,7 @@
                   <input
                     type="number"
                     class="form-control"
+                    placeholder="Product price"
                     id="price"
                     formControlName="price"
                   />
@@ -172,42 +82,12 @@
               </div>
               <!--end col-->
 
-              <div class="col-xxl-6 col-md-6">
-                <div>
-                  <label for="valueInput" class="form-label"
-                    >Product Quantity</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="qty"
-                    formControlName="qty"
-                  />
-                  <p
-                    *ngIf="
-                      isSubmitted &&
-                      productUpdateForm.get('qty')?.hasError('required')
-                    "
-                    class="text-danger"
-                  >
-                    Quantity is required
-                  </p>
-                </div>
-              </div>
+              <div class="col-xxl-6 col-md-6"></div>
               <!--end col-->
-              <div class="col-xxl-6 col-md-6">
-                <div>
-                  <div class="form-check">
-                    <input class="form-check-input" [(ngModel)]="inStock" type="checkbox" id="formCheck2" [checked]="inStock" value="true">
-                    <label class="form-check-label" for="formCheck2">
-                      In Stock
-                    </label>
-                </div>
-                </div>
-              </div>
-              <!--end col-->
+              
 
               <div class="col-xxl-12 col-md-12">
+
                 <label class="form-label">Current Product Images</label>
 
                 <div *ngIf="images.length > 0" class="image-slider">
@@ -230,76 +110,22 @@
                   </div>
                 </div>
 
-                <input
-                  type="file"
-                  #fileInput
-                  (change)="fileChangeEvent($event)"
-                  id="imageUpload"
-                  class="form-control"
-                />
-                <!-- <p
-                  *ngIf="isSubmitted && selectedFiles.length === 0"
-                  class="text-danger"
-                >
-                  At least one image is required
-                </p> -->
+                <label class="form-label">New Product Images</label>
 
-                <div class="col-xxl-12 col-md-12" *ngIf="imageChangedEvent">
-                  <div class="cropper-container">
-                    <image-cropper
-                      [imageChangedEvent]="imageChangedEvent"
-                      [maintainAspectRatio]="false"
-                      [aspectRatio]="cropperAspectRatio"
-                      format="png"
-                      (imageCropped)="imageCropped($event)"
-                      (imageLoaded)="imageLoaded($event)"
-                      (cropperReady)="cropperReady()"
-                      (loadImageFailed)="loadImageFailed()"
-                    ></image-cropper>
+                
+                <form (submit)="onSubmit()" enctype="multipart/form-data" class="upload-form">
+                  <div class="file-input-container">
+                    <input type="file" (change)="onFileSelected($event)" class="custom-file-input" />
                   </div>
-                </div>
+                  <button type="submit" class="btn btn-upload">Upload</button>
+                </form>
+                
 
-                <button
-                  type="button"
-                  *ngIf="imageChangedEvent"
-                  class="btn btn-primary mt-2"
-                  (click)="addCroppedImage()"
-                >
-                  Add Cropped Image
-                </button>
-
-                <button
-                  type="button"
-                  *ngIf="imageChangedEvent"
-                  class="btn btn-danger mt-2 btn-margin"
-                  (click)="removeCroppedImageEvent()"
-                >
-                  Reset
-                </button>
-
-                <div class="col-xxl-12 col-md-12 new-selected-image-list">
-                  <label *ngIf="selectedFiles.length > 0" class="form-label"
-                    >New Product Images</label
-                  >
-
-                  <div *ngIf="selectedFiles.length > 0" class="image-slider">
-                    <div
-                      *ngFor="let file of selectedFiles; let i = index"
-                      class="image-slide"
-                    >
-                      <img
-                        [src]="file.url"
-                        class="cropped-image"
-                        (click)="openModal(file.url)"
-                      />
-                      <button
-                        type="button"
-                        class="remove-icon"
-                        (click)="removeCroppedImage(i)"
-                      >
-                        ×
-                      </button>
-                    </div>
+                <!-- Image Preview -->
+                <div *ngIf="uploadedImageUrl" class="image-preview-container">
+                  <!-- <label class="form-label">Image Preview</label> -->
+                  <div class="image-preview">
+                    <img [src]="uploadedImageUrl" alt="Uploaded Image" />
                   </div>
                 </div>
 
@@ -314,6 +140,7 @@
                   </div>
                 </div>
               </div>
+              <!--end col-->
 
               <div class="col-xxl-12 col-md-12">
                 <label class="form-label">Product Description</label>
@@ -334,95 +161,6 @@
                 </p>
               </div>
               <!--end col-->
-
-              <div class="col-xxl-12 col-md-12">
-                <label for="choices-single-default" class="form-label"
-                  >Additional Info</label
-                >
-                <div class="input-box skills" formArrayName="items">
-                  <div
-                    class="column"
-                    *ngFor="let control of getControls(); let i = index"
-                  >
-                    <div [formGroupName]="i">
-                      <div class="row">
-                        <div class="col-12">
-                          <div class="card mb-3">
-                            <div class="card-body">
-                              <div class="row">
-                                <div class="col-12">
-                                  <div class="mb-3">
-                                    <label class="form-label">Title</label>
-                                    <input
-                                      formControlName="title"
-                                      type="text"
-                                      class="form-control"
-                                    />
-                                    <p
-                                      *ngIf="
-                                        isSubmitted &&
-                                        control
-                                          .get('title')
-                                          ?.hasError('required')
-                                      "
-                                      class="text-danger"
-                                    >
-                                      Title is required
-                                    </p>
-                                  </div>
-                                </div>
-                                <div class="col-12">
-                                  <!-- Example Textarea -->
-                                  <div class="mb-3">
-                                    <label class="form-label"
-                                      >Description</label
-                                    >
-                                    <textarea
-                                      class="form-control"
-                                      id="exampleFormControlTextarea5"
-                                      formControlName="description"
-                                      rows="3"
-                                    ></textarea>
-                                    <p
-                                      *ngIf="
-                                        isSubmitted &&
-                                        control
-                                          .get('description')
-                                          ?.hasError('required')
-                                      "
-                                      class="text-danger"
-                                    >
-                                      Description is required
-                                    </p>
-                                  </div>
-                                </div>
-                                <div class="col-4">
-                                  <button
-                                    type="button"
-                                    class="btn btn-danger"
-                                    (click)="deleteInfo(i)"
-                                  >
-                                    <i class="ri-delete-bin-6-line"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div *ngIf="hideButton < 2" class="col-md-4">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    (click)="addInfo()"
-                  >
-                    <i class="ri-add-line"></i>
-                  </button>
-                </div>
-              </div>
             </div>
             <!--end row-->
           </div>
@@ -430,7 +168,7 @@
         <div class="card-footer custom-tr">
           <button
             type="submit"
-            class="btn btn-primary waves-effect waves-light"
+            class="btn btn-secondary waves-effect waves-light"
           >
             Update Product
           </button>
