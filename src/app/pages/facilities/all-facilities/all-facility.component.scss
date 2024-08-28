@@ -1,0 +1,59 @@
+.card {
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #333;
+  }
+  
+  .card-text {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .card .badge {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media (max-width: 768px) {
+    .card-title {
+      font-size: 1.1rem;
+    }
+  
+    .card-text {
+      font-size: 0.85rem;
+    }
+  }
+
+  .btn-full-width {
+    display: block;
+    width: 100%;
+  }
+
+  .card-header.custom-tr {
+    display: flex;
+    justify-content: flex-end; /* Aligns content to the right */
+    padding: 1rem; /* Adjust padding as needed */
+  }
+  
+  .header-content {
+    margin-left: auto; /* Pushes the button to the right */
+  }
+  
+  
+  

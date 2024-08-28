@@ -14,6 +14,7 @@ import { AddStaffComponent } from './user-management/staff-management/add-staff/
 import { UpdateStaffComponent } from './user-management/staff-management/update-staff/update-staff-management.component';
 import { CustomerAllDetailsComponent } from './user-management/customer-management/customer-management.component';
 import { FacilitiesDetailsComponent } from './facilities/all-facilities/all-facility.component';
+import { AddFacilityComponent } from './facilities/add-facility/add-facility.component';
 
 // Component pages
 
@@ -81,6 +82,10 @@ const routes: Routes = [
   {
     path: "facilities",
     component: FacilitiesDetailsComponent
+  },
+  {
+    path: "facilities/add",
+    component: AddFacilityComponent
   }
 
 
